@@ -4,4 +4,4 @@
  commands:
    xr:
      description: enabled or disabled xrefill
-     usage: /xr <command>
+     usage: /<command>

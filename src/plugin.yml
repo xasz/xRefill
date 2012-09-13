@@ -1,0 +1,7 @@
+ name: xRefill
+ main: de.xasz.xRefill.xRefill
+ version: 0.1
+ commands:
+   xr:
+     description: enabled or disabled xrefill
+     usage: /xr <command>

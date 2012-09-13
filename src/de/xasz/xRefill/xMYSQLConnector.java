@@ -34,7 +34,7 @@ public class xMYSQLConnector {
                     status = true;
                     Statement stmt = this.con.createStatement();
                     stmt.executeUpdate(
-                                    "CREATE TABLE IF NOT EXISTS repeller"+
+                                    "CREATE TABLE IF NOT EXISTS refill"+
                                     "(" +
                                     "id INTEGER auto_increment PRIMARY KEY," +
                                     "worlduid char(100),"+
@@ -93,7 +93,7 @@ public class xMYSQLConnector {
 		if(!isBlockWatched(world,x,y,z)){
 			try{
 				state = con.createStatement();
-				state.executeUpdate("INSERT INTO blockwatcher (world,x,y,z) VALUES ('"+world+"',"+x+","+y+","+z+");");
+				state.executeUpdate("INSERT INTO refill (world,x,y,z) VALUES ('"+world+"',"+x+","+y+","+z+");");
 			}
 			catch(Exception e){
 				
@@ -119,7 +119,7 @@ public class xMYSQLConnector {
 		boolean success = false;
 		try {
 		    state = con.createStatement();
-			res = state.executeQuery("Select * from blockwatcher Where world = '"+world+"' and x = "+x+" and y = "+y+" and z = "+z+";");
+			res = state.executeQuery("Select * from refill Where world = '"+world+"' and x = "+x+" and y = "+y+" and z = "+z+";");
 			//getcount
 			res.last();
 			int count = res.getRow();
@@ -150,7 +150,7 @@ public class xMYSQLConnector {
 		Statement state = null;
 		try {
 		    state = con.createStatement();
-			state.executeUpdate("DELETE from blockwatcher Where world = '"+world+"' and x = "+x+" and y = "+y+" and z = "+z+";");
+			state.executeUpdate("DELETE from refill Where world = '"+world+"' and x = "+x+" and y = "+y+" and z = "+z+";");
 			//getcount
 		} catch (Exception e) {
 

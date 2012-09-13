@@ -13,12 +13,17 @@ public class xRefill extends JavaPlugin{
 	public int mysqlPort = 3604;
 	public String mysqlDatabase = "";
 	public xMYSQLConnector sql = null;
+	public xListener handler = null;
     @Override
     public void onEnable() {
         PluginManager pm = this.getServer().getPluginManager();
         PluginDescriptionFile pdfFile = this.getDescription();
         this.sql = new xMYSQLConnector(this);
-        this.getCommand("xr").setExecutor(new xListener(this));
+        
+        handler = new xListener(this);
+        pm.registerEvents(handler, this);        
+        this.getCommand("xr").setExecutor(handler);
+        
         mysqlDatabase = this.getConfig().getString("mysql.db");               
         mysqlUser = this.getConfig().getString("mysql.username");             
         mysqlServer = this.getConfig().getString("mysql.server");           

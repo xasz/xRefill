@@ -1,8 +1,6 @@
 package de.xasz.xRefill;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 
@@ -18,6 +16,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockDispenseEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -79,7 +78,7 @@ public class xListener implements Listener, CommandExecutor{
             else{
             	sender.sendMessage("Not Availible in Console");
             }
-        
+            return true;
         }	
 
         return false;
@@ -125,13 +124,13 @@ public class xListener implements Listener, CommandExecutor{
 	        					x.sql.disBlock(block.getWorld().getUID().toString(), block.getX(), block.getY(), block.getZ());
 	            				event.getPlayer().sendMessage(ChatColor.BLACK+"[xRefill]"+ChatColor.WHITE+" Block is normal now.");
 	            			}
-	        				waitingPlayers.remove(event.getPlayer().getName());
 	        			}
 	            	}
 	            }else{
 	            	event.getPlayer().sendMessage(ChatColor.BLACK+"[xRefill]"+ChatColor.WHITE+" Did this look like an Dispenser ?");
 	            	event.getPlayer().sendMessage(ChatColor.BLACK+"[xRefill]"+ChatColor.WHITE+" Disabled");	
 	            }
+				waitingPlayers.remove(event.getPlayer().getName());
     		}
           }
     }
@@ -144,6 +143,14 @@ public class xListener implements Listener, CommandExecutor{
              dispenser.getInventory().addItem(item);	
             }
         }
-}
-
+	}
+	@EventHandler(priority = EventPriority.NORMAL)
+    public void onBlockBreak(BlockBreakEvent event){
+        if ( event.getBlock().getState() instanceof Dispenser){
+        	 if (this.x.sql != null && this.x.sql.isBlockWatched(event.getBlock().getWorld().getUID().toString(), event.getBlock().getX(), event.getBlock().getY(), event.getBlock().getZ())){
+        		 event.getPlayer().sendMessage(ChatColor.BLACK+"[xRefill]"+ChatColor.WHITE+" You are not allowed to break this block as long it is set up for automatic Refill ?");
+        		 event.setCancelled(true);
+        	 }
+        }
+	}
 }

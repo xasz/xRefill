@@ -62,7 +62,7 @@ public class xMYSQLConnector {
                     this.con.close();
                     status = false;
             } catch (SQLException e) {                      
-      //              writeError(e.getMessage(), true);
+                   writeError(e.getMessage(), true);
             }
     }
     /** 
@@ -96,7 +96,8 @@ public class xMYSQLConnector {
 				state.executeUpdate("INSERT INTO refill (world,x,y,z) VALUES ('"+world+"',"+x+","+y+","+z+");");
 			}
 			catch(Exception e){
-				
+				System.out.println(e.getMessage());
+				return false;
 			}
 			finally{
 				try{

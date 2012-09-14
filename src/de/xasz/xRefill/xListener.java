@@ -113,9 +113,12 @@ public class xListener implements Listener, CommandExecutor{
 	        			if(this.x.sql != null){
 	        				String command = waitingPlayers.get(event.getPlayer().getName());
 	        				if(command == "on"){
-	        					x.sql.watchBlock(block.getWorld().getUID().toString(), block.getX(), block.getY(), block.getZ());
-	            				event.getPlayer().sendMessage(ChatColor.BLACK+"[xRefill]"+ChatColor.WHITE+" Block is refilled now.");
-	            			}else if(command == "check"){
+	        					if(x.sql.watchBlock(block.getWorld().getUID().toString(), block.getX(), block.getY(), block.getZ()))
+	        						event.getPlayer().sendMessage(ChatColor.BLACK+"[xRefill]"+ChatColor.WHITE+" Block is refilled now.");
+	        					else
+	        						event.getPlayer().sendMessage(ChatColor.BLACK+"[xRefill]"+ChatColor.WHITE+" Error occured.");
+
+	        				}else if(command == "check"){
 	            				if(x.sql.isBlockWatched(block.getWorld().getUID().toString(), block.getX(), block.getY(), block.getZ()))
 	        						event.getPlayer().sendMessage(ChatColor.BLACK+"[xRefill]"+ChatColor.WHITE+" Block is refilled.");
 	            				else

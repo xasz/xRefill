@@ -40,38 +40,50 @@ public class xListener implements Listener, CommandExecutor{
             	Player p = x.getServer().getPlayer(sender.getName());
             	if(args.length <= 1){
                     if (args.length == 0 || args[0].equals("on")){
+                    	 if(!p.hasPermission("xRefill.on")){
+                    		 p.sendMessage(ChatColor.WHITE+"[xRefill]"+ChatColor.RED+" No Permission ");	 
+                    		 return false;
+                    	 }
                     	if(waitingPlayers.containsKey(p.getName())){
                     		if(waitingPlayers.get(p.getName()) == "on")
-                    			p.sendMessage(ChatColor.BLACK+"[xRefill]"+ChatColor.WHITE+" You already did this... ");
+                    			p.sendMessage(ChatColor.WHITE+"[xRefill]"+ChatColor.GREEN+" You already did this... ");
                     		else
                     			waitingPlayers.put(p.getName(), "on");
                     	}else{
-                    		p.sendMessage(ChatColor.BLACK+"[xRefill]"+ChatColor.WHITE+" The next Chest or Dispenser you hit will be enabled to refill.");
+                    		p.sendMessage(ChatColor.WHITE+"[xRefill]"+ChatColor.GREEN+" The next Chest or Dispenser you hit will be enabled to refill.");
                     		waitingPlayers.put(p.getName(), "on");
                     	}
                     	
                     } else if(args[0].equals("off")){
+                   	 if(!p.hasPermission("xRefill.off")){
+                		 p.sendMessage(ChatColor.WHITE+"[xRefill]"+ChatColor.RED+" No Permission ");	 
+                		 return false;
+                	 }
                     	if(waitingPlayers.containsKey(p.getName())){
                     		if(waitingPlayers.get(p.getName()) == "off")
-                    			p.sendMessage(ChatColor.BLACK+"[xRefill]"+ChatColor.WHITE+" You already did this... ");
+                    			p.sendMessage(ChatColor.WHITE+"[xRefill]"+ChatColor.GREEN+" You already did this... ");
                     		else
                     			waitingPlayers.put(p.getName(), "off");
                     	}else{
-                    		p.sendMessage(ChatColor.BLACK+"[xRefill]"+ChatColor.WHITE+" The next Chest or Dispenser you hit will be enabled to refill.");
+                    		p.sendMessage(ChatColor.WHITE+"[xRefill]"+ChatColor.GREEN+" The next Chest or Dispenser you hit will be enabled to refill.");
                     		waitingPlayers.put(p.getName(), "off");
                     	}
                     } else if(args[0].equals("check")){
+                   	 if(!p.hasPermission("xRefill.check")){
+                		 p.sendMessage(ChatColor.WHITE+"[xRefill]"+ChatColor.RED+" No Permission ");	 
+                		 return false;
+                	 }
                     	if(waitingPlayers.containsKey(p.getName())){
                     		if(waitingPlayers.get(p.getName()) == "check")
-                    			p.sendMessage(ChatColor.BLACK+"[xRefill]"+ChatColor.WHITE+" You already did this... ");
+                    			p.sendMessage(ChatColor.WHITE+"[xRefill]"+ChatColor.GREEN+" You already did this... ");
                     		else
                     			waitingPlayers.put(p.getName(), "check");
                     	}else{
-                    		p.sendMessage(ChatColor.BLACK+"[xRefill]"+ChatColor.WHITE+" The next Chest or Dispenser you hit will be checked for refill.");
+                    		p.sendMessage(ChatColor.WHITE+"[xRefill]"+ChatColor.GREEN+" The next Chest or Dispenser you hit will be checked for refill.");
                     		waitingPlayers.put(p.getName(), "check");
                     	}
                     }else {
-                    	p.sendMessage(ChatColor.BLACK+"[xRefill] Invalid Command.");
+                    	p.sendMessage(ChatColor.WHITE+"[xRefill]"+ChatColor.RED+" Invalid Command.");
                     }
             	}
             }
@@ -114,36 +126,36 @@ public class xListener implements Listener, CommandExecutor{
 	        				String command = waitingPlayers.get(event.getPlayer().getName());
 	        				if(command == "on"){
 	        					if(x.sql.watchBlock(block.getWorld().getUID().toString(), block.getX(), block.getY(), block.getZ()))
-	        						event.getPlayer().sendMessage(ChatColor.BLACK+"[xRefill]"+ChatColor.WHITE+" Block is refilled now.");
+	        						event.getPlayer().sendMessage(ChatColor.WHITE+"[xRefill]"+ChatColor.WHITE+" Block is refilled now.");
 	        					else
-	        						event.getPlayer().sendMessage(ChatColor.BLACK+"[xRefill]"+ChatColor.WHITE+" Error occured.");
+	        						event.getPlayer().sendMessage(ChatColor.WHITE+"[xRefill]"+ChatColor.WHITE+" Error occured.");
 
 	        				}else if(command == "check"){
 	            				if(x.sql.isBlockWatched(block.getWorld().getUID().toString(), block.getX(), block.getY(), block.getZ()))
-	        						event.getPlayer().sendMessage(ChatColor.BLACK+"[xRefill]"+ChatColor.WHITE+" Block is refilled.");
+	        						event.getPlayer().sendMessage(ChatColor.WHITE+"[xRefill]"+ChatColor.WHITE+" Block is refilled.");
 	            				else
-	        						event.getPlayer().sendMessage(ChatColor.BLACK+"[xRefill]"+ChatColor.WHITE+" Block is not refilled.");
+	        						event.getPlayer().sendMessage(ChatColor.WHITE+"[xRefill]"+ChatColor.WHITE+" Block is not refilled.");
 	        				}else if(command == "off"){
 	        					x.sql.disBlock(block.getWorld().getUID().toString(), block.getX(), block.getY(), block.getZ());
-	            				event.getPlayer().sendMessage(ChatColor.BLACK+"[xRefill]"+ChatColor.WHITE+" Block is normal now.");
+	            				event.getPlayer().sendMessage(ChatColor.WHITE+"[xRefill]"+ChatColor.WHITE+" Block is normal now.");
 	            			}
 	        			}
 	            	}
 	            }else{
-	            	event.getPlayer().sendMessage(ChatColor.BLACK+"[xRefill]"+ChatColor.WHITE+" Did this look like an Dispenser ?");
-	            	event.getPlayer().sendMessage(ChatColor.BLACK+"[xRefill]"+ChatColor.WHITE+" Disabled");	
+	            	event.getPlayer().sendMessage(ChatColor.WHITE+"[xRefill]"+ChatColor.WHITE+" Did this look like an Dispenser ?");
+	            	event.getPlayer().sendMessage(ChatColor.WHITE+"[xRefill]"+ChatColor.WHITE+" Disabled");	
 	            }
 				waitingPlayers.remove(event.getPlayer().getName());
     		}
           }
     }
-	@EventHandler(priority = EventPriority.NORMAL)
+	@EventHandler(priority = EventPriority.MONITOR)
     public void onBlockDispense(BlockDispenseEvent event){
         if ( event.getBlock().getState() instanceof Dispenser){
         	ItemStack item = event.getItem();
             Dispenser dispenser = (Dispenser) event.getBlock().getState();
             if (this.x.sql != null && this.x.sql.isBlockWatched(event.getBlock().getWorld().getUID().toString(), event.getBlock().getX(), event.getBlock().getY(), event.getBlock().getZ())){
-             dispenser.getInventory().addItem(item);	
+                dispenser.getInventory().addItem(event.getItem());	
             }
         }
 	}
@@ -151,7 +163,7 @@ public class xListener implements Listener, CommandExecutor{
     public void onBlockBreak(BlockBreakEvent event){
         if ( event.getBlock().getState() instanceof Dispenser){
         	 if (this.x.sql != null && this.x.sql.isBlockWatched(event.getBlock().getWorld().getUID().toString(), event.getBlock().getX(), event.getBlock().getY(), event.getBlock().getZ())){
-        		 event.getPlayer().sendMessage(ChatColor.BLACK+"[xRefill]"+ChatColor.WHITE+" You are not allowed to break this block as long it is set up for automatic Refill ?");
+        		 event.getPlayer().sendMessage(ChatColor.WHITE+"[xRefill]"+ChatColor.WHITE+" You are not allowed to break this block as long it is set up for automatic Refill ?");
         		 event.setCancelled(true);
         	 }
         }

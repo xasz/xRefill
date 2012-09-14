@@ -88,12 +88,12 @@ public class xMYSQLConnector {
     }
 
 	public boolean watchBlock(String world, int x, int y, int z) {
-		connect();
 		Statement state = null;
 		if(!isBlockWatched(world,x,y,z)){
+			connect();
 			try{
 				state = con.createStatement();
-				state.executeUpdate("INSERT INTO refill (world,x,y,z) VALUES ('"+world+"',"+x+","+y+","+z+");");
+				state.executeUpdate("INSERT INTO refill (worlduid,x,y,z) VALUES ('"+world+"',"+x+","+y+","+z+");");
 			}
 			catch(Exception e){
 				System.out.println(e.getMessage());
@@ -120,7 +120,7 @@ public class xMYSQLConnector {
 		boolean success = false;
 		try {
 		    state = con.createStatement();
-			res = state.executeQuery("Select * from refill Where world = '"+world+"' and x = "+x+" and y = "+y+" and z = "+z+";");
+			res = state.executeQuery("Select * from refill Where worlduid = '"+world+"' and x = "+x+" and y = "+y+" and z = "+z+";");
 			//getcount
 			res.last();
 			int count = res.getRow();
@@ -151,7 +151,7 @@ public class xMYSQLConnector {
 		Statement state = null;
 		try {
 		    state = con.createStatement();
-			state.executeUpdate("DELETE from refill Where world = '"+world+"' and x = "+x+" and y = "+y+" and z = "+z+";");
+			state.executeUpdate("DELETE from refill Where worlduid = '"+world+"' and x = "+x+" and y = "+y+" and z = "+z+";");
 			//getcount
 		} catch (Exception e) {
 

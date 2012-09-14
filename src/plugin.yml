@@ -3,5 +3,15 @@
  version: 0.1
  commands:
    xr:
-     description: enabled or disabled xrefill
+     description: on, off, check
      usage: /<command>
+ permissions:
+  xRefill.on:
+    description: Allows you to enabled the dispenserrefill
+    default: true
+  xRefill.off:
+    description: Allows you to disable the dispenserrefill
+    default: true
+  xRefill.check:
+    description: Allows you to check the dispenserrefill
+    default: true

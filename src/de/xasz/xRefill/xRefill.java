@@ -20,8 +20,7 @@ public class xRefill extends JavaPlugin{
         PluginDescriptionFile pdfFile = this.getDescription();
         this.sql = new xMYSQLConnector(this);
         
-        handler = new xListener(this);
-        pm.registerEvents(handler, this);        
+        handler = new xListener(this);   
         this.getCommand("xr").setExecutor(handler);
         
         mysqlDatabase = this.getConfig().getString("mysql.db");               

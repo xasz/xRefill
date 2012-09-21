@@ -1,10 +1,12 @@
 package de.xasz.xRefill;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Dispenser;
@@ -18,6 +20,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockDispenseEvent;
+import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
@@ -168,4 +171,21 @@ public class xListener implements Listener, CommandExecutor{
         	 }
         }
 	}
+	  @EventHandler(priority = EventPriority.NORMAL)
+	  public void onPistonExtend(BlockPistonExtendEvent event) {
+	          List<Block> iBlocks = event.getBlocks();
+	          for(Block block : iBlocks){
+	                  //oldposition
+	                  Location triggeredBlockloc = block.getRelative(event.getDirection(),0).getLocation();
+	                  triggeredBlockloc.setY(triggeredBlockloc.getY());
+	                  Block triggeredBlock = triggeredBlockloc.getBlock();
+	                  Material mat = triggeredBlock.getType();
+	                  if(mat == Material.DISPENSER){
+	                    //have to be checked
+	                	  if (this.x.sql != null && this.x.sql.isBlockWatched(event.getBlock().getWorld().getUID().toString(), event.getBlock().getX(), event.getBlock().getY(), event.getBlock().getZ())){
+	                 		 event.setCancelled(true);
+	                 	  }
+	                   }
+	          }
+	  }  
 }

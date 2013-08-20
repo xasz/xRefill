@@ -36,7 +36,6 @@ public class xListener implements Listener, CommandExecutor{
     public boolean onCommand(CommandSender sender, Command command, String commandLabel, String[] args)
     {
         String commandName = command.getName().toLowerCase();
-        String[] trimmedArgs = args;
         if(commandName.equals("xr"))
         {
             if(sender instanceof Player ){
@@ -155,7 +154,6 @@ public class xListener implements Listener, CommandExecutor{
 	@EventHandler(priority = EventPriority.MONITOR)
     public void onBlockDispense(BlockDispenseEvent event){
         if ( event.getBlock().getState() instanceof Dispenser){
-        	ItemStack item = event.getItem();
             Dispenser dispenser = (Dispenser) event.getBlock().getState();
             if (this.x.sql != null && this.x.sql.isBlockWatched(event.getBlock().getWorld().getUID().toString(), event.getBlock().getX(), event.getBlock().getY(), event.getBlock().getZ())){
                 dispenser.getInventory().addItem(event.getItem());	
